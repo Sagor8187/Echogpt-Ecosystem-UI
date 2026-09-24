@@ -10,8 +10,8 @@ import {
 import { BsDiamond } from 'react-icons/bs';
 import { TbApiApp } from 'react-icons/tb';
 import { FaDiscord } from 'react-icons/fa';
+import Footer from './Footer';
 
-// টাইপস্ক্রিপ্ট ইন্টারফেস
 interface NavLink {
   name: string;
   icon: IconType;
@@ -27,7 +27,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const engagementLinks: NavLink[] = [
-    { name: 'Image Studio', icon: FiImage, pro: true, href: '#' },
+    { name: 'Image Studio', icon: FiImage, pro: true, href: '/image' },
     { name: 'Video Studio', icon: FiFilm, pro: true, href: '#' },
     { name: 'Compare', icon: FiLayers, pro: false, href: '#' },
     { name: 'Connectors', icon: FiShare2, pro: false, href: '#' },
@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
   return (
     <>
-      {/* Mobile Overlay: ব্যাকগ্রাউন্ড ব্লার এবং বাইরে ক্লিক করলে বন্ধ হওয়ার জন্য */}
+      {/* Mobile Overlay */}
       <div 
         className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -61,7 +61,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
       {/* Sidebar Container */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 flex h-screen w-64 flex-col border-r border-gray-200/50 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800/50 dark:bg-gray-950 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-gray-200/50 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800/50 dark:bg-gray-950 lg:static lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -85,8 +85,8 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           </button>
         </div>
 
-        {/* Scrollable Navigation Area */}
-        <div className="custom-scrollbar flex-1 overflow-y-auto px-3 pb-6">
+        {/* Scrollable Navigation Area take space use flex 1 */}
+        <div className="custom-scrollbar flex-1 overflow-y-auto px-3 pb-4">
           
           {/* Engagement Section */}
           <div className="mb-6">
@@ -98,7 +98,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                 <li key={index}>
                   <Link 
                     href={link.href}
-                    onClick={() => setIsOpen(false)} // মোবাইলে লিংকে ক্লিক করলে সাইডবার বন্ধ হবে
+                    onClick={() => setIsOpen(false)} 
                     className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
                   >
                     <div className="flex items-center gap-3">
@@ -166,7 +166,13 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
             </ul>
           </div>
 
+        </div> 
+
+        {/* FOOTER Section  */}
+        <div className="mt-auto w-full">
+          <Footer />
         </div>
+
       </aside>
     </>
   );

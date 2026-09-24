@@ -1,10 +1,11 @@
 "use client";
 
 import Link from 'next/link';
-import { FiLogIn, FiMenu } from 'react-icons/fi'; // FiMenu যুক্ত করা হয়েছে
+import { FiLogIn, FiMenu } from 'react-icons/fi'; 
 import { FaBahai } from "react-icons/fa6";
+import ModeToggle from './Darktheme';
 
-// সাইডবার ওপেন করার জন্য প্রপস
+
 interface NavbarProps {
   onMenuClick: () => void;
 }
@@ -17,7 +18,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
         {/* Left side: Hamburger Menu & Logo for EchoGPT */}
         <div className="flex items-center gap-3">
           
-          {/* Mobile Menu Button - এটি মোবাইলে সাইডবার ওপেন করবে */}
+          {/* Mobile Menu Button */}
           <button 
             onClick={onMenuClick}
             className="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 lg:hidden"
@@ -33,6 +34,9 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
 
         {/* Right side: Sign In Button with Hover Icon Effect */}
         <div className="flex items-center gap-4">
+            <div>
+                <ModeToggle></ModeToggle>
+            </div>
           <Link
             href="/signin"
             className="group relative flex h-10 w-32 items-center justify-center overflow-hidden rounded-full bg-blue-600 text-sm font-medium text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
