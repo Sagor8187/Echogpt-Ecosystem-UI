@@ -27,7 +27,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           </button>
 
           <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            <span className='text-blue-600'><FaBahai /></span>
+            <span className='text-blue-600 hidden md:block'><FaBahai /></span>
             Echo<span className="text-blue-600 dark:text-blue-500">GPT</span>
           </Link>
         </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { IconType } from 'react-icons';
 import { 
   FiEdit, FiImage, FiFilm, FiLayers, FiShare2, FiMessageSquare, 
@@ -17,7 +18,6 @@ interface NavLink {
   icon: IconType;
   pro: boolean;
   href: string;
-  active?: boolean;
 }
 
 interface SidebarProps {
@@ -26,27 +26,30 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+  // Get current route pathname to check active link automatically
+  const pathname = usePathname();
+
   const engagementLinks: NavLink[] = [
     { name: 'Image Studio', icon: FiImage, pro: true, href: '/image' },
-    { name: 'Video Studio', icon: FiFilm, pro: true, href: '#' },
-    { name: 'Compare', icon: FiLayers, pro: false, href: '#' },
-    { name: 'Connectors', icon: FiShare2, pro: false, href: '#' },
-    { name: 'History', icon: FiMessageSquare, pro: false, href: '#' },
-    { name: 'Store', icon: FiShoppingBag, pro: false, href: '#' },
+    { name: 'Video Studio', icon: FiFilm, pro: true, href: '/video' },
+    { name: 'Compare', icon: FiLayers, pro: false, href: '/compare' },
+    { name: 'Connectors', icon: FiShare2, pro: false, href: '/connectors' },
+    { name: 'History', icon: FiMessageSquare, pro: false, href: '/history' },
+    { name: 'Store', icon: FiShoppingBag, pro: false, href: '/store' },
   ];
 
   const aiLinks: NavLink[] = [
-    { name: 'AI Tasks', icon: FiGrid, pro: false, href: '#' },
-    { name: 'AI Job Analysis', icon: FiFileText, pro: false, href: '#' },
-    { name: 'AI SOP Builder', icon: FiList, pro: false, href: '#' },
+    { name: 'AI Tasks', icon: FiGrid, pro: false, href: '/ai-tasks' },
+    { name: 'AI Job Analysis', icon: FiFileText, pro: false, href: '/ai-job-analysis' },
+    { name: 'AI SOP Builder', icon: FiList, pro: false, href: '/ai-sop-builder' },
   ];
 
   const supportLinks: NavLink[] = [
-    { name: 'Support', icon: FiMessageCircle, pro: false, href: '#' },
-    { name: 'Newsletter', icon: FiMail, pro: false, href: '#' },
-    { name: 'Subscriptions', icon: BsDiamond, pro: false, href: '#' },
-    { name: 'API Platform', icon: TbApiApp, pro: false, href: '#', active: false },
-    { name: 'Discord', icon: FaDiscord, pro: false, href: '#' },
+    { name: 'Support', icon: FiMessageCircle, pro: false, href: '/support' },
+    { name: 'Newsletter', icon: FiMail, pro: false, href: '/newsletter' },
+    { name: 'Subscriptions', icon: BsDiamond, pro: false, href: '/subscriptions' },
+    { name: 'API Platform', icon: TbApiApp, pro: false, href: '/api-platform' },
+    { name: 'Discord', icon: FaDiscord, pro: false, href: '/discord' },
   ];
 
   return (
@@ -85,7 +88,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           </button>
         </div>
 
-        {/* Scrollable Navigation Area take space use flex 1 */}
+        {/* Scrollable Navigation Area */}
         <div className="custom-scrollbar flex-1 overflow-y-auto px-3 pb-4">
           
           {/* Engagement Section */}
@@ -94,43 +97,65 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               Engagement
             </h3>
             <ul className="space-y-1">
-              {engagementLinks.map((link, index) => (
-                <li key={index}>
-                  <Link 
-                    href={link.href}
-                    onClick={() => setIsOpen(false)} 
-                    className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
-                  >
-                    <div className="flex items-center gap-3">
-                      <link.icon className="h-5 w-5 text-gray-400 transition-colors group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" />
-                      {link.name}
-                    </div>
-                    {link.pro && (
-                      <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
-                        PRO
-                      </span>
-                    )}
-                  </Link>
-                </li>
-              ))}
+              {engagementLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={index}>
+                    <Link 
+                      href={link.href}
+                      onClick={() => setIsOpen(false)} 
+                      className={`group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                        isActive 
+                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <link.icon className={`h-5 w-5 transition-colors ${
+                          isActive 
+                            ? 'text-blue-600 dark:text-blue-400' 
+                            : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                        }`} />
+                        {link.name}
+                      </div>
+                      {link.pro && (
+                        <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
+                          PRO
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           {/* AI Tools Section */}
           <div className="mb-6">
             <ul className="space-y-1">
-              {aiLinks.map((link, index) => (
-                <li key={index}>
-                  <Link 
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
-                  >
-                    <link.icon className="h-5 w-5 text-gray-400 transition-colors group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" />
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              {aiLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={index}>
+                    <Link 
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                        isActive 
+                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                      }`}
+                    >
+                      <link.icon className={`h-5 w-5 transition-colors ${
+                        isActive 
+                          ? 'text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                      }`} />
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -145,30 +170,35 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               Help & Support
             </h3>
             <ul className="space-y-1">
-              {supportLinks.map((link, index) => (
-                <li key={index}>
-                  <Link 
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                      link.active 
-                        ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
-                    }`}
-                  >
-                    <link.icon className={`h-5 w-5 transition-colors ${
-                      link.active ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
-                    }`} />
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              {supportLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={index}>
+                    <Link 
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                        isActive 
+                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                      }`}
+                    >
+                      <link.icon className={`h-5 w-5 transition-colors ${
+                        isActive 
+                          ? 'text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                      }`} />
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
         </div> 
 
-        {/* FOOTER Section  */}
+        {/* Footer Section */}
         <div className="mt-auto w-full">
           <Footer />
         </div>

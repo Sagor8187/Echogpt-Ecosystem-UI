@@ -34,23 +34,24 @@ const ImageStudio = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white font-sans flex flex-col items-center">
+    <div className="w-full min-h-screen bg-white dark:bg-gray-950 font-sans flex flex-col items-center transition-colors duration-300 pt-8 md:pt-16">
       
       {/* Header */}
-      <div className="text-center mt-16 mb-8 px-4">
-        <h1 className="text-3xl font-bold text-white mb-3">Image Studio</h1>
-        <p className="text-gray-400 text-lg">Create images that stop the scroll.</p>
+      <div className="text-center mb-8 px-4">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Image Studio</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">Create images that stop the scroll.</p>
       </div>
 
       {/* Main Card */}
       <div className="w-full max-w-4xl px-4">
-        <div className="border border-gray-800/50 bg-gray-950 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div className="border border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-900/50 rounded-3xl p-6 md:p-8 shadow-sm transition-colors duration-300">
+          
           {/* Input */}
           <input 
             type="text" 
-            className="w-full bg-transparent text-white placeholder-gray-500 outline-none text-lg md:text-xl mb-8" 
+            className="w-full bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none text-lg md:text-xl mb-8" 
             placeholder="Turn my photo into a professional headshot" 
-            defaultValue="Turn my photo into a professional headshot" 
+            
           />
 
           {/* Controls Container */}
@@ -58,12 +59,12 @@ const ImageStudio = () => {
             
             <div className="flex flex-wrap items-center gap-4">
               {/* Plus Button */}
-              <button className="w-10 h-10 rounded-full border border-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-gray-800/50 transition-colors flex-shrink-0">
+              <button className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800/50 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0">
                 <Plus size={20} />
               </button>
 
               {/* Aspect Ratios */}
-              <div className="flex items-center bg-gray-900/50 border border-gray-800/50 rounded-full p-1">
+              <div className="flex items-center bg-gray-100 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800/50 rounded-full p-1 transition-colors duration-300">
                 {aspectRatios.map(ratio => (
                   <button
                     key={ratio}
@@ -71,7 +72,7 @@ const ImageStudio = () => {
                     className={`px-3 md:px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
                       aspectRatio === ratio
                         ? 'bg-blue-600 text-white shadow-sm'
-                        : 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
                     {ratio}
@@ -80,7 +81,7 @@ const ImageStudio = () => {
               </div>
 
               {/* Image Count */}
-              <div className="flex items-center bg-gray-900/50 border border-gray-800/50 rounded-full p-1">
+              <div className="flex items-center bg-gray-100 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800/50 rounded-full p-1 transition-colors duration-300">
                 {imageCounts.map(num => (
                   <button
                     key={num}
@@ -88,7 +89,7 @@ const ImageStudio = () => {
                     className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors ${
                       imageCount === num
                         ? 'bg-blue-600 text-white shadow-sm'
-                        : 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
                     {num}
@@ -99,10 +100,10 @@ const ImageStudio = () => {
               {/* Model Selector */}
               <button
                 onClick={() => setIsModelOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-800/50 text-sm font-medium text-white hover:bg-gray-800/50 transition-colors bg-gray-900/30"
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-800/50 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-300"
               >
                 {selectedModel}
-                <ChevronDown size={16} className="text-gray-400" />
+                <ChevronDown size={16} className="text-gray-400 dark:text-gray-500" />
               </button>
             </div>
 
@@ -112,22 +113,22 @@ const ImageStudio = () => {
             </button>
           </div>
 
-          <div className="mt-8 pt-5 border-t border-gray-800/50">
-            <p className="text-gray-500 text-sm text-center md:text-left">
+          <div className="mt-8 pt-5 border-t border-gray-200 dark:border-gray-800/50 transition-colors duration-300">
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center md:text-left">
               Image generation is a paid feature — upgrade to start creating images.
             </p>
           </div>
         </div>
 
         {/* Subtext */}
-        <p className="text-center text-gray-500 text-sm mt-6">
+        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
           Each image uses one message from your plan. Generation takes up to a minute.
         </p>
 
         {/* Creations section */}
         <div className="mt-16 mb-20">
-          <h2 className="text-white font-bold text-xl mb-12">Your creations</h2>
-          <div className="text-center text-gray-500">
+          <h2 className="text-gray-900 dark:text-white font-bold text-xl mb-12">Your creations</h2>
+          <div className="text-center text-gray-500 dark:text-gray-400">
             Nothing here yet — describe an image above to get started.
           </div>
         </div>
@@ -135,19 +136,19 @@ const ImageStudio = () => {
 
       {/* Model Selection Modal */}
       {isModelOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setIsModelOpen(false)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/60 backdrop-blur-sm transition-all duration-300" onClick={() => setIsModelOpen(false)}>
           <div 
-            className="bg-gray-950 border border-gray-800/50 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl"
+            className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/50 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl transition-colors duration-300"
             onClick={e => e.stopPropagation()}
           >
-            <div className="p-6 pb-4 flex justify-between items-start border-b border-gray-800/50">
+            <div className="p-6 pb-4 flex justify-between items-start border-b border-gray-100 dark:border-gray-800/50">
               <div>
-                <h2 className="text-xl font-bold text-white mb-1">Choose a model</h2>
-                <p className="text-gray-400 text-sm">Picks the model used for your next generation.</p>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Choose a model</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">Picks the model used for your next generation.</p>
               </div>
               <button 
                 onClick={() => setIsModelOpen(false)}
-                className="text-gray-500 hover:text-white bg-gray-900/50 hover:bg-gray-800/50 rounded-full p-1.5 transition-colors"
+                className="text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white bg-gray-100 dark:bg-gray-900/50 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full p-1.5 transition-colors"
               >
                 <X size={20} />
               </button>
@@ -156,7 +157,7 @@ const ImageStudio = () => {
             <div className="overflow-y-auto p-6 space-y-8 custom-scrollbar">
               {models.map((section, idx) => (
                 <div key={idx}>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-1">{section.category}</h3>
+                  <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 px-1">{section.category}</h3>
                   <div className="space-y-2.5">
                     {section.options.map((model, mIdx) => {
                       const isSelected = selectedModel === model.name;
@@ -169,20 +170,20 @@ const ImageStudio = () => {
                           }}
                           className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex justify-between items-center ${
                             isSelected 
-                              ? 'border-blue-600 bg-blue-900/10' 
-                              : 'border-gray-800/50 bg-gray-900/30 hover:border-gray-700/80 hover:bg-gray-800/40'
+                              ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/10' 
+                              : 'border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-900/30 hover:border-gray-300 dark:hover:border-gray-700/80 hover:bg-gray-50 dark:hover:bg-gray-800/50'
                           }`}
                         >
                           <div>
-                            <div className={`font-semibold mb-1 ${isSelected ? 'text-white' : 'text-gray-200'}`}>
+                            <div className={`font-semibold mb-1 ${isSelected ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>
                               {model.name}
                             </div>
-                            <div className="text-sm text-gray-400">
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
                               {model.description}
                             </div>
                           </div>
                           {isSelected && (
-                            <div className="bg-blue-600 rounded-full p-0.5 text-white flex-shrink-0 ml-4">
+                            <div className="bg-blue-600 rounded-full p-0.5 text-white flex-shrink-0 ml-4 shadow-sm">
                               <Check size={16} strokeWidth={3} />
                             </div>
                           )}
@@ -196,21 +197,6 @@ const ImageStudio = () => {
           </div>
         </div>
       )}
-
-      {/* Global Style for Custom Scrollbar matching the dark theme */}
-      <style dangerouslySetInnerHTML={{__html: `
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #374151; /* gray-700 */
-          border-radius: 20px;
-          border: 3px solid #030712; /* gray-950 */
-        }
-      `}} />
     </div>
   );
 };
