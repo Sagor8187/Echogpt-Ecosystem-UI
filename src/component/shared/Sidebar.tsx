@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { IconType } from 'react-icons';
 import { 
   FiEdit, FiImage, FiFilm, FiLayers, FiShare2, FiMessageSquare, 
@@ -55,37 +56,49 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   return (
     <>
       {/* Mobile Overlay */}
-      <div 
-        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      <motion.div 
+        initial={false}
+        animate={{ opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsOpen(false)}
       />
 
       {/* Sidebar Container */}
-      <aside 
-        className={`fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-gray-200/50 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800/50 dark:bg-gray-950 lg:static lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <motion.aside 
+        initial={false}
+        animate={{ 
+          x: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 0 : (isOpen ? 0 : '-100%') 
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-gray-200/50 bg-white dark:border-gray-800/50 dark:bg-gray-950 lg:translate-x-0 lg:static"
       >
         
         {/* Mobile Close Button & Header */}
         <div className="flex items-center justify-between p-4 lg:hidden">
           <span className="text-lg font-bold text-gray-900 dark:text-white">Menu</span>
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(false)} 
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
           >
             <FiX className="h-5 w-5" />
-          </button>
+          </motion.button>
         </div>
 
         {/* Top Section: New Chat Button */}
         <div className="p-4 pt-2 lg:pt-4">
-          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30 active:scale-95">
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/30"
+          >
             <FiEdit className="h-5 w-5" />
             New Chat
-          </button>
+          </motion.button>
         </div>
 
         {/* Scrollable Navigation Area */}
@@ -104,25 +117,30 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     <Link 
                       href={link.href}
                       onClick={() => setIsOpen(false)} 
-                      className={`group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                        isActive 
-                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
-                      }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <link.icon className={`h-5 w-5 transition-colors ${
+                      <motion.div
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                           isActive 
-                            ? 'text-blue-600 dark:text-blue-400' 
-                            : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
-                        }`} />
-                        {link.name}
-                      </div>
-                      {link.pro && (
-                        <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
-                          PRO
-                        </span>
-                      )}
+                            ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <link.icon className={`h-5 w-5 transition-colors ${
+                            isActive 
+                              ? 'text-blue-600 dark:text-blue-400' 
+                              : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                          }`} />
+                          {link.name}
+                        </div>
+                        {link.pro && (
+                          <span className="rounded bg-blue-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
+                            PRO
+                          </span>
+                        )}
+                      </motion.div>
                     </Link>
                   </li>
                 );
@@ -140,18 +158,23 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     <Link 
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                        isActive 
-                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
-                      }`}
                     >
-                      <link.icon className={`h-5 w-5 transition-colors ${
-                        isActive 
-                          ? 'text-blue-600 dark:text-blue-400' 
-                          : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
-                      }`} />
-                      {link.name}
+                      <motion.div
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                          isActive 
+                            ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                        }`}
+                      >
+                        <link.icon className={`h-5 w-5 transition-colors ${
+                          isActive 
+                            ? 'text-blue-600 dark:text-blue-400' 
+                            : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                        }`} />
+                        {link.name}
+                      </motion.div>
                     </Link>
                   </li>
                 );
@@ -177,18 +200,23 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     <Link 
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
-                        isActive 
-                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
-                      }`}
                     >
-                      <link.icon className={`h-5 w-5 transition-colors ${
-                        isActive 
-                          ? 'text-blue-600 dark:text-blue-400' 
-                          : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
-                      }`} />
-                      {link.name}
+                      <motion.div
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                          isActive 
+                            ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/20 dark:text-blue-400' 
+                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white'
+                        }`}
+                      >
+                        <link.icon className={`h-5 w-5 transition-colors ${
+                          isActive 
+                            ? 'text-blue-600 dark:text-blue-400' 
+                            : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
+                        }`} />
+                        {link.name}
+                      </motion.div>
                     </Link>
                   </li>
                 );
@@ -203,7 +231,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           <Footer />
         </div>
 
-      </aside>
+      </motion.aside>
     </>
   );
 };
