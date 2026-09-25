@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiGrid, 
   FiMaximize2, 
@@ -14,7 +15,6 @@ import {
   FiCircle
 } from 'react-icons/fi';
 
-// Define the model type based on the screenshots
 interface AIModel {
   id: string;
   name: string;
@@ -23,7 +23,6 @@ interface AIModel {
   colorClass: string;
 }
 
-// Extracted data from the modal screenshots
 const availableModels: AIModel[] = [
   { id: 'echo', name: 'EchoGPT', icon: FiHexagon, colorClass: 'bg-purple-600' },
   { id: 'deepseek-pro', name: 'DeepSeek V4 Pro', icon: FiBox, colorClass: 'bg-blue-600' },
@@ -45,7 +44,6 @@ const CompareComponent = () => {
   const [activeTab, setActiveTab] = useState<'compare' | 'focus'>('compare');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Default selected models
   const [selectedModelIds, setSelectedModelIds] = useState<string[]>([
     'echo', 'deepseek-pro', 'nemotron'
   ]);
@@ -55,7 +53,6 @@ const CompareComponent = () => {
       if (prev.includes(id)) {
         return prev.filter(modelId => modelId !== id);
       }
-      // Assuming a max of 5 models can be selected
       if (prev.length >= 5) return prev;
       return [...prev, id];
     });
@@ -64,58 +61,102 @@ const CompareComponent = () => {
   const selectedModelsData = availableModels.filter(m => selectedModelIds.includes(m.id));
 
   return (
-    <div className="w-full min-h-screen bg-gray-50  dark:bg-gray-950 font-sans flex flex-col items-center pt-8 md:pt-16 transition-colors duration-300">
+    <div className="w-full min-h-screen bg-gray-50 dark:bg-gray-950 font-sans flex flex-col items-center pt-8 md:pt-16 transition-colors duration-300 custom-scrollbar overflow-x-hidden">
       
       {/* Top Navigation Pills */}
-      <div className="flex p-1 bg-gray-200/50 dark:bg-gray-900/50 rounded-full mb-10 md:mb-16 border border-gray-200 dark:border-gray-800/50">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex p-1 bg-gray-200/50 dark:bg-gray-900/50 rounded-full mb-10 md:mb-16 border border-gray-200 dark:border-gray-800/50"
+      >
         <button
           onClick={() => setActiveTab('compare')}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`relative flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 ${
             activeTab === 'compare'
-              ? 'bg-blue-600 text-white shadow-md'
+              ? 'text-white'
               : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           }`}
         >
-          <FiGrid size={16} />
-          Compare
+          {activeTab === 'compare' && (
+            <motion.div
+              layoutId="activeCompareTab"
+              className="absolute inset-0 bg-blue-600 rounded-full shadow-md z-0"
+              transition={{ type: "spring", stiffness: 500, damping: 35 }}
+            />
+          )}
+          <span className="relative z-10 flex items-center gap-2">
+            <FiGrid size={16} /> Compare
+          </span>
         </button>
+
         <button
           onClick={() => setActiveTab('focus')}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`relative flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors duration-300 ${
             activeTab === 'focus'
-              ? 'bg-blue-600 text-white shadow-md'
+              ? 'text-white'
               : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
           }`}
         >
-          <FiMaximize2 size={16} />
-          Focus
+          {activeTab === 'focus' && (
+            <motion.div
+              layoutId="activeCompareTab"
+              className="absolute inset-0 bg-blue-600 rounded-full shadow-md z-0"
+              transition={{ type: "spring", stiffness: 500, damping: 35 }}
+            />
+          )}
+          <span className="relative z-10 flex items-center gap-2">
+            <FiMaximize2 size={16} /> Focus
+          </span>
         </button>
-      </div>
+      </motion.div>
 
-      {/* Main Content Area (Removed justify-between and flex-1 to fix the gap) */}
-      <div className="w-full max-w-4xl px-4 flex flex-col items-center mt-4 md:mt-8">
+      {/* Main Content Area */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="w-full max-w-4xl px-4 flex flex-col items-center mt-4 md:mt-8"
+      >
         
         {/* Dynamic Center Text / Pills */}
         <div className="w-full flex items-center justify-center mb-10 md:mb-14">
-          {activeTab === 'compare' ? (
-            <p className="text-gray-500 dark:text-gray-400 text-lg md:text-xl text-center">
-              Ask one question and see how {selectedModelIds.length} models answer it.
-            </p>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-3">
-              {selectedModelsData.map(model => (
-                <div 
-                  key={model.id} 
-                  className="px-5 py-2.5 rounded-full border border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-900/40 text-gray-700 dark:text-gray-300 text-sm font-medium shadow-sm transition-colors"
-                >
-                  {model.name}
-                </div>
-              ))}
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {activeTab === 'compare' ? (
+              <motion.p 
+                key="compare-text"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="text-gray-500 dark:text-gray-400 text-lg md:text-xl text-center"
+              >
+                Ask one question and see how {selectedModelIds.length} models answer it.
+              </motion.p>
+            ) : (
+              <motion.div 
+                key="focus-pills"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-wrap justify-center gap-3"
+              >
+                {selectedModelsData.map(model => (
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    key={model.id} 
+                    className="px-5 py-2.5 rounded-full border border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-900/40 text-gray-700 dark:text-gray-300 text-sm font-medium shadow-sm"
+                  >
+                    {model.name}
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Bottom Chat Input Container (Color updated to match top container) */}
+        {/* Bottom Chat Input Container */}
         <div className="w-full">
           <div className="border border-gray-200 dark:border-gray-800/50 bg-white dark:bg-gray-900/50 rounded-2xl p-4 shadow-sm transition-colors duration-300">
             
@@ -128,16 +169,17 @@ const CompareComponent = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
               
               {/* Model Selector Button */}
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setIsModalOpen(true)}
                 className="flex items-center gap-3 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700/80 bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
               >
-                {/* Overlapping Icons */}
                 <div className="flex items-center -space-x-2">
                   {selectedModelsData.slice(0, 3).map((model, idx) => (
                     <div 
                       key={idx} 
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${model.colorClass} border-2 border-gray-50 dark:border-[#13131a] z-[${3-idx}]`}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${model.colorClass} border-2 border-gray-50 dark:border-[#13131a]`}
                     >
                       <model.icon size={10} />
                     </div>
@@ -146,96 +188,117 @@ const CompareComponent = () => {
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-200 pr-2">
                   {selectedModelsData[0]?.name} {selectedModelIds.length > 1 ? `+${selectedModelIds.length - 1} more` : ''}
                 </span>
-              </button>
+              </motion.button>
 
               {/* Compare Submit Button */}
-              <button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-95">
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-xl transition-colors shadow-md shadow-blue-600/20"
+              >
                 Compare
-              </button>
+              </motion.button>
             </div>
           </div>
           
-          {/* Footer limits text */}
           <p className="text-xs text-gray-500 dark:text-gray-500 mt-3 px-2">
             5 of 5 comparisons left today · resets in a day · upgrade for 50 a day
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Choose Models Modal (Kept same as before) */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/60 backdrop-blur-sm transition-all duration-300" onClick={() => setIsModalOpen(false)}>
-          <div 
-            className="bg-white dark:bg-[#13131a] border border-gray-200 dark:border-gray-800/80 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transition-colors duration-300"
-            onClick={e => e.stopPropagation()}
+      {/* Choose Models Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsModalOpen(false)}
           >
-            {/* Modal Header */}
-            <div className="p-6 pb-4 flex justify-between items-start">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Choose models</h2>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">Every model answers the same prompt, side by side.</p>
-                <p className="text-gray-400 dark:text-gray-500 text-xs mt-2">
-                  {selectedModelIds.length}/5 models selected · each column costs one message
-                </p>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white dark:bg-[#13131a] border border-gray-200 dark:border-gray-800/80 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-6 pb-4 flex justify-between items-start">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Choose models</h2>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">Every model answers the same prompt, side by side.</p>
+                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-2">
+                    {selectedModelIds.length}/5 models selected · each column costs one message
+                  </p>
+                </div>
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white bg-gray-100 dark:bg-gray-900/50 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full p-1.5 transition-colors"
+                >
+                  <FiX size={20} />
+                </motion.button>
               </div>
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white bg-gray-100 dark:bg-gray-900/50 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full p-1.5 transition-colors"
-              >
-                <FiX size={20} />
-              </button>
-            </div>
 
-            {/* Modal Body (Grid of models) */}
-            <div className="overflow-y-auto px-6 pb-6 custom-scrollbar flex-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {availableModels.map((model) => {
-                  const isSelected = selectedModelIds.includes(model.id);
-                  return (
-                    <button
-                      key={model.id}
-                      onClick={() => toggleModelSelection(model.id)}
-                      className={`w-full flex items-center justify-between p-3.5 rounded-xl border transition-all duration-200 ${
-                        isSelected 
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20' 
-                          : 'border-gray-200 dark:border-gray-800/60 bg-transparent hover:border-gray-300 dark:hover:border-gray-700/80 hover:bg-gray-50 dark:hover:bg-gray-900/40'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${model.colorClass}`}>
-                          <model.icon size={14} />
+              {/* Modal Body */}
+              <div className="overflow-y-auto px-6 pb-6 custom-scrollbar flex-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {availableModels.map((model) => {
+                    const isSelected = selectedModelIds.includes(model.id);
+                    return (
+                      <motion.button
+                        key={model.id}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => toggleModelSelection(model.id)}
+                        className={`w-full flex items-center justify-between p-3.5 rounded-xl border transition-colors ${
+                          isSelected 
+                            ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20' 
+                            : 'border-gray-200 dark:border-gray-800/60 bg-transparent hover:border-gray-300 dark:hover:border-gray-700/80 hover:bg-gray-50 dark:hover:bg-gray-900/40'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${model.colorClass}`}>
+                            <model.icon size={14} />
+                          </div>
+                          <span className={`font-medium text-sm ${isSelected ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>
+                            {model.name}
+                          </span>
+                          {model.isPro && (
+                            <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-600 ml-1">Pro</span>
+                          )}
                         </div>
-                        <span className={`font-medium text-sm ${isSelected ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>
-                          {model.name}
-                        </span>
-                        {model.isPro && (
-                          <span className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-600 ml-1">Pro</span>
+                        
+                        {isSelected && (
+                          <div className="bg-blue-600 rounded-full p-0.5 text-white flex-shrink-0">
+                            <FiCheck size={14} strokeWidth={3} />
+                          </div>
                         )}
-                      </div>
-                      
-                      {isSelected && (
-                        <div className="bg-blue-600 rounded-full p-0.5 text-white flex-shrink-0">
-                          <FiCheck size={14} strokeWidth={3} />
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-gray-100 dark:border-gray-800/80 bg-gray-50 dark:bg-[#0b0a10] flex justify-end">
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-xl transition-all duration-300 active:scale-95"
-              >
-                Apply for this chat
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              {/* Modal Footer */}
+              <div className="p-4 border-t border-gray-100 dark:border-gray-800/80 bg-gray-50 dark:bg-[#0b0a10] flex justify-end">
+                <motion.button 
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsModalOpen(false)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-xl transition-colors shadow-md shadow-blue-600/20"
+                >
+                  Apply for this chat
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,10 +1,9 @@
 "use client";
 
 import Link from 'next/link';
-import { FiLogIn, FiMenu } from 'react-icons/fi'; 
+import { FiLogIn, FiMenu, FiAlertCircle } from 'react-icons/fi'; 
 import { FaBahai } from "react-icons/fa6";
 import ModeToggle from './Darktheme';
-
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -29,6 +28,27 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             <span className='text-blue-600 hidden md:block'><FaBahai /></span>
             Echo<span className="text-blue-600 dark:text-blue-500">GPT</span>
+          </Link>
+        </div>
+
+        {/* Middle side: Compact Pro Upgrade Warning (Hidden on mobile) */}
+        <div className="hidden md:flex items-center gap-4 rounded-full bg-indigo-600 p-1.5 pl-5 shadow-sm transition-transform hover:scale-[1.02]">
+          
+          <div className="flex items-center gap-2.5 text-white">
+            {/* Warning Animation (Ping effect behind the icon) */}
+            <div className="relative flex h-4 w-4 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/60 opacity-75"></span>
+              <FiAlertCircle className="relative h-4 w-4" /> {/*[cite: 23]*/}
+            </div>
+            
+            <span className="text-sm font-medium tracking-wide">Unlock Pro Features</span> {/*[cite: 23]*/}
+          </div>
+
+          <Link 
+            href="/pricing" 
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-bold text-indigo-600 transition-all hover:bg-indigo-50 hover:shadow-md active:scale-95"
+          >
+            Upgrade to Pro {/*[cite: 23]*/}
           </Link>
         </div>
 

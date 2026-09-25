@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   FiSearch, 
   FiHexagon, 
@@ -22,7 +23,7 @@ export interface AppData {
   colorClass: string;
 }
 
-// Data Array - Main page e rakha holo ebong export kora holo
+// Data Array
 export const storeApps: AppData[] = [
   {
     id: 'echogpt',
@@ -99,20 +100,30 @@ const StorePage = () => {
   );
 
   return (
-    <div className="w-full min-h-screen bg-gray-50  dark:bg-gray-950 font-sans flex flex-col items-center pt-12 md:pt-20 px-4 transition-colors duration-300 pb-20">
+    <div className="w-full min-h-screen bg-gray-50 dark:bg-gray-950 font-sans flex flex-col items-center pt-12 md:pt-20 px-4 transition-colors duration-300 pb-20 custom-scrollbar">
       
-      {/* Header */}
-      <div className="text-center w-full max-w-3xl mb-10">
+      {/* Header with Fade-in Animation */}
+      <motion.div 
+        initial={{ opacity: -20, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center w-full max-w-3xl mb-10"
+      >
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           EchoGPT Store
         </h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg">
           Discover and create custom versions of ChatGPT that combine instructions, extra knowledge, and any combination of skills.
         </p>
-      </div>
+      </motion.div>
 
-      {/* Search */}
-      <div className="w-full max-w-4xl relative mb-12">
+      {/* Search Bar Animation */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="w-full max-w-4xl relative mb-12"
+      >
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
           <FiSearch size={20} />
         </div>
@@ -123,24 +134,35 @@ const StorePage = () => {
           placeholder="Search for the Apps" 
           className="w-full bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/80 rounded-2xl pl-12 pr-4 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-500/70 shadow-sm transition-all"
         />
-      </div>
+      </motion.div>
 
-      {/* Grid */}
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredApps.map((app) => (
-          <div 
-            key={app.id} 
-            className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-6 flex flex-col hover:border-gray-300 dark:hover:border-gray-700 transition-colors shadow-sm"
+      {/* Grid Container */}
+      <motion.div 
+        layout
+        className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {filteredApps.map((app, index) => (
+          <motion.div
+            key={app.id}
+            layout
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-6 flex flex-col hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-xl dark:hover:shadow-blue-500/5 transition-all duration-300"
           >
             <div className="flex justify-between items-start mb-6">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white ${app.colorClass}`}>
+              <motion.div 
+                whileHover={{ rotate: 10, scale: 1.1 }}
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-white ${app.colorClass}`}
+              >
                 <app.icon size={24} />
-              </div>
+              </motion.div>
               
-              {/* Ekhane Link er maddhome /store/[id] te pathano hocche */}
               <Link 
                 href={`/store/${app.id}`}
-                className="bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700/80 text-gray-900 dark:text-white text-sm font-medium py-2 px-5 rounded-full transition-colors border border-gray-200 dark:border-gray-700/50 active:scale-95"
+                className="bg-gray-100 dark:bg-gray-800/50 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-gray-900 dark:text-white text-sm font-medium py-2 px-5 rounded-full transition-all duration-300 border border-gray-200 dark:border-gray-700/50 active:scale-95 shadow-sm"
               >
                 Try App
               </Link>
@@ -152,9 +174,9 @@ const StorePage = () => {
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed flex-1">
               {app.description}
             </p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

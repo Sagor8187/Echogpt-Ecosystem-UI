@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { FiMail, FiArrowRight } from 'react-icons/fi';
 import { MdVerifiedUser, MdAutoGraph } from 'react-icons/md';
 
@@ -36,28 +37,38 @@ export default function NewsletterComponent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-    // Handle newsletter subscription logic here
     console.log('Subscribing email:', email);
     setEmail('');
   };
 
   return (
-    <main className="w-full min-h-screen bg-gray-50 dark:bg-gray-950 font-sans text-gray-900 dark:text-gray-100 flex flex-col items-center justify-center pt-16 md:pt-24 px-4 pb-20 transition-colors duration-300">
+    <main className="w-full min-h-screen bg-gray-50 dark:bg-gray-950 font-sans text-gray-900 dark:text-gray-100 flex flex-col items-center justify-center pt-16 md:pt-24 px-4 pb-20 transition-colors duration-300 custom-scrollbar overflow-x-hidden">
       
-      <div className="w-full max-w-5xl flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="w-full max-w-5xl flex flex-col items-center">
         
-        {/* Semantic Header */}
-        <header className="text-center w-full max-w-3xl mb-12">
+        {/* Semantic Header with Framer Motion */}
+        <motion.header 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center w-full max-w-3xl mb-12"
+        >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
             Elevate Your <span className="text-blue-600 dark:text-blue-500">AI Strategy</span>
           </h1>
           <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
             Join 50,000+ professionals receiving curated insights on AI productivity, industry trends, and exclusive EchoGPT features.
           </p>
-        </header>
+        </motion.header>
 
         {/* Newsletter Form Section */}
-        <section className="w-full max-w-md mb-20" aria-label="Newsletter Subscription Form">
+        <motion.section 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="w-full max-w-md mb-20" 
+          aria-label="Newsletter Subscription Form"
+        >
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             
             {/* Email Input */}
@@ -76,17 +87,24 @@ export default function NewsletterComponent() {
             </div>
 
             {/* Submit Button */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-xl transition-all duration-300 active:scale-[0.98] shadow-md shadow-blue-600/20"
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-xl transition-colors shadow-md shadow-blue-600/20"
             >
               <span>Join the Newsletter</span>
               <FiArrowRight size={18} className="mt-0.5" />
-            </button>
+            </motion.button>
           </form>
 
           {/* Trust Badges */}
-          <div className="flex items-center justify-center gap-6 mt-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="flex items-center justify-center gap-6 mt-6"
+          >
             <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-gray-500 dark:text-gray-400 uppercase">
               <MdVerifiedUser className="text-blue-600 dark:text-blue-500" size={16} />
               <span>No Spam Policy</span>
@@ -95,16 +113,20 @@ export default function NewsletterComponent() {
               <MdAutoGraph className="text-blue-600 dark:text-blue-500" size={16} />
               <span>Premium Insights</span>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* Feature Cards Section */}
         <section className="w-full" aria-label="Newsletter Benefits">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {featureCards.map((card) => (
-              <article 
+            {featureCards.map((card, index) => (
+              <motion.article 
                 key={card.id}
-                className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 md:p-8 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all duration-300 flex flex-col"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 + index * 0.08 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 md:p-8 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-colors flex flex-col"
               >
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {card.title}
@@ -112,7 +134,7 @@ export default function NewsletterComponent() {
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                   {card.description}
                 </p>
-              </article>
+              </motion.article>
             ))}
           </div>
         </section>
