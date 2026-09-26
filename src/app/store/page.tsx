@@ -150,7 +150,7 @@ const StorePage = () => {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4, delay: index * 0.05 }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-6 flex flex-col hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-xl dark:hover:shadow-blue-500/5 transition-all duration-300"
+            className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-6 flex flex-col hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-xl dark:hover:shadow-blue-500/5 transition-all duration-300"
           >
             <div className="flex justify-between items-start mb-6">
               <motion.div 

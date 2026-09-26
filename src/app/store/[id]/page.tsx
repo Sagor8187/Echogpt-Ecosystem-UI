@@ -104,7 +104,7 @@ export default async function AppDetailsPage({ params }: { params: Promise<{ id:
         </Link>
 
         {/* Details Card */}
-        <div className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center md:items-start gap-8">
+        <div className="bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800/80 rounded-3xl p-8 md:p-12 shadow-sm flex flex-col md:flex-row items-center md:items-start gap-8">
           
           {/* Large Icon */}
           <div className={`w-32 h-32 flex-shrink-0 rounded-[2rem] flex items-center justify-center text-white ${appData.colorClass} shadow-lg`}>
