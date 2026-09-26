@@ -129,7 +129,7 @@ export default function PricingAndFAQComponent() {
           {pricingPlans.map((plan) => (
             <article 
               key={plan.id} 
-              className="relative bg-white dark:bg-gray-950 border-2 border-blue-600 rounded-3xl p-6 pt-10 flex flex-col shadow-lg shadow-blue-600/5 transition-transform hover:-translate-y-1 duration-300"
+              className="relative bg-white dark:bg-gray-900/60 border-2 border-blue-600 rounded-3xl p-6 pt-10 flex flex-col shadow-lg shadow-blue-600/5 transition-transform hover:-translate-y-1 duration-300"
             >
               {/* Recommended Badge */}
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
