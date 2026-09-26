@@ -56,7 +56,7 @@ export default function ConnectorsClient() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="flex bg-gray-900/60 rounded-md flex-col items-center justify-center py-20 text-center"
+                className="flex bg-white  dark:bg-gray-900/60 rounded-md flex-col items-center justify-center py-20 text-center"
               >
                 <motion.div 
                   animate={{ y: [0, -6, 0] }}

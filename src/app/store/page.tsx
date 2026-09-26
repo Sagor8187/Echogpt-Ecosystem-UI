@@ -109,7 +109,7 @@ const StorePage = () => {
         transition={{ duration: 0.5 }}
         className="text-center w-full max-w-3xl mb-10"
       >
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h1 className="text-4xl font-bold text-blue-600  mb-4">
           EchoGPT Store
         </h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg">
