@@ -42,7 +42,7 @@ export default function HomeView() {
         <header className="text-center w-full max-w-3xl mb-16">
           
           {/* App Logo Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-600/30">
+          <div className="w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-600/30">
             <FiHexagon size={36} />
           </div>
 

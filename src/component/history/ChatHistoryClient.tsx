@@ -39,7 +39,7 @@ export default function ChatHistoryClient() {
         transition={{ duration: 0.5 }}
         className="text-center w-full max-w-2xl mb-12"
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        <h1 className="text-3xl font-bold text-blue-600 mb-4">
           My Chat History
         </h1>
         <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg">

@@ -44,7 +44,7 @@ const VideoStudio = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-8 px-4"
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Video Studio</h1>
+        <h1 className="text-3xl font-bold text-blue-600  mb-3">Video Studio</h1>
         <p className="text-gray-500 dark:text-gray-400 text-lg">Just type what you imagine, and the video makes itself.</p>
       </motion.div>
 
